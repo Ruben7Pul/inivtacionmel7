@@ -4,8 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Invitación XV</title>
+  <script>
+    // Si volvemos del botón "Salir" del juego, marcamos el <html>
+    // ANTES de pintar nada, para que el CSS oculte la reja de una vez
+    // y no se alcance a ver ni un instante (ver reglas ".sin-reja" en style-principal.css).
+    if (location.search.indexOf('volver=1') !== -1) {
+      document.documentElement.classList.add('sin-reja');
+    }
+  </script>
 
-  <!-- Meta Open Graph -->
   <meta property="og:title" content="Invitación a mis XV años" />
   <meta property="og:description" content="Te invitamos a celebrar mis 15 años. ¡No faltes!" />
   <meta property="og:image" content="https://tudominio.com/archivos/og-image.jpg" />
@@ -16,23 +23,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
   
-  <!-- CSS CON TIMESTAMP PARA FORZAR RECARGA -->
-  <link rel="stylesheet" href="style.css?v=20260801b">
+  <link rel="stylesheet" href="style-principal.css?v=20260804">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌹</text></svg>">
 </head>
 <body>
   <div id="bg"></div>
-  <div id="petals-layer" role="presentation"></div>
+  <video id="video-app" autoplay loop muted playsinline>
+    <source src="archivos/mar1.webm" type="video/webm">
+    <source src="archivos/mar1.mp4" type="video/mp4">
+  </video>
 
   <!-- PORTAL / REJA -->
   <div id="portal" role="dialog" aria-label="Puerta de entrada">
+    <video id="video-portal" autoplay loop muted playsinline>
+      <source src="archivos/mar2.webm" type="video/webm">
+      <source src="archivos/mar2.mp4" type="video/mp4">
+    </video>
     <div class="portal-inner">
       <span class="eyebrow gold-text">Una invitación encantada</span>
       <div class="gate-wrapper" id="gate-wrapper" role="button" tabindex="0" aria-label="Abrir la reja">
         <!-- Hoja izquierda -->
         <div class="gate-leaf gate-left" aria-hidden="true">
           <svg viewBox="0 0 150 200" width="100%" height="100%">
+            <!-- SVG completo de la hoja izquierda (copiar el que ya tenías) -->
             <defs>
               <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#f5e6b8"/>
@@ -119,6 +133,7 @@
         <!-- Hoja derecha -->
         <div class="gate-leaf gate-right" aria-hidden="true">
           <svg viewBox="0 0 150 200" width="100%" height="100%">
+            <!-- SVG completo de la hoja derecha (copiar el que ya tenías) -->
             <defs>
               <linearGradient id="goldGrad2" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#f5e6b8"/>
@@ -210,7 +225,11 @@
   <!-- APP PRINCIPAL -->
   <div id="app" role="main">
     <div id="app-top">
-      <button type="button" id="back-link" class="top-btn" aria-label="Volver a la reja">↩</button>
+      <button type="button" id="back-link" class="top-btn" aria-label="Volver a la reja">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
       <span class="eyebrow gold-text">Te invito a mis XV años</span>
       <button id="music-toggle" aria-label="Silenciar o activar música" class="top-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -222,7 +241,6 @@
     </div>
 
     <div id="app-mid">
-      <!-- Óvalo dorado -->
       <div id="oval-wrap">
         <div class="oval-frame">
           <div class="oval-mask">
@@ -231,22 +249,16 @@
         </div>
       </div>
 
-      <!-- Nombre -->
       <div class="name-wrap">
         <h1 id="nombre-hero">X</h1>
       </div>
 
-      <!-- Frase -->
       <p class="frase-inline gold-text" id="frase-texto">Cargando...</p>
-
-      <!-- Fecha -->
       <p class="fecha-fija gold-text" id="fecha-fija">Cargando...</p>
-
-      <!-- Mensaje -->
-      <p class="hint gold-text" id="hint-juego">👆 Toca el nombre para jugar</p>
     </div>
 
-    <!-- Botones de navegación -->
+    <p class="hint gold-text" id="hint-juego">👆 Toca el nombre para jugar</p>
+
     <nav id="nav" aria-label="Navegación principal">
       <button class="nav-btn" data-modal="modal-contador" aria-label="Cuenta regresiva">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="8"/><path d="M12 9 L12 13 L15 15 M9 2 L15 2"/></svg>
@@ -264,7 +276,6 @@
   </div>
 
   <!-- MODALES -->
-  <!-- 1. CONTADOR -->
   <div class="modal-overlay" id="modal-contador" role="dialog" aria-modal="true" aria-labelledby="modal-contador-title">
     <div class="modal-card">
       <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
@@ -276,19 +287,13 @@
         <div class="unit"><span class="num" id="m">00</span><span class="lbl gold-text">Min</span></div>
         <div class="unit"><span class="num" id="s">00</span><span class="lbl gold-text">Seg</span></div>
       </div>
-      <div class="modal-seal">
-        <span class="gold-text">✦</span>
-        <span class="gold-text" style="font-family: var(--script); font-size: 1.2rem;">La rosa encantada</span>
-        <span class="gold-text">✦</span>
-      </div>
     </div>
   </div>
 
-  <!-- 2. LUGARES -->
   <div class="modal-overlay" id="modal-detalles" role="dialog" aria-modal="true" aria-labelledby="modal-detalles-title">
     <div class="modal-card">
       <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
-      <h2 id="modal-detalles-title" class="gold-text">🏰 Donde 🏰 o</h2>
+      <h2 id="modal-detalles-title" class="gold-text">🏰 Donde 🏰</h2>
       <div class="detalle-card">
         <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2 L12 8 M8 6 L16 6 M6 22 L18 22 L18 12 L6 12 Z M9 22 L9 16 L15 16 L15 22"/></svg>
         <h3 class="gold-text">Misa</h3>
@@ -311,11 +316,10 @@
     </div>
   </div>
 
-  <!-- 3. FAMILIA -->
   <div class="modal-overlay" id="modal-familia" role="dialog" aria-modal="true" aria-labelledby="modal-familia-title">
     <div class="modal-card">
       <button class="modal-close" data-close aria-label="Cerrar">&times;</button>
-      <h2 id="modal-familia-title" class="gold-text">👑 Mi noble familia 👑</h2>
+      <h2 id="modal-familia-title" class="gold-text">👑 Mi familia 👑</h2>
       <p class="modal-subtitle gold-text">La corte que me acompaña</p>
       <div class="familia-grupo">
         <div class="familia-titulo">
@@ -327,7 +331,7 @@
           <p class="gold-text"><span class="tratamiento">Sr.</span> <span id="padre1">--</span></p>
           <p class="gold-text"><span class="tratamiento">Sra.</span> <span id="padre2">--</span></p>
         </div>
-        <p class="familia-detalle gold-text" style="font-family: var(--serif-body); font-style: italic;">"Su amor me ha dado alas"</p>
+        <p class="familia-detalle gold-text">"Su amor me ha dado alas"</p>
       </div>
       <div class="divider-thin" aria-hidden="true"></div>
       <div class="familia-grupo">
@@ -340,44 +344,11 @@
           <p class="gold-text"><span class="tratamiento">Sr.</span> <span id="padrino1">--</span></p>
           <p class="gold-text"><span class="tratamiento">Sra.</span> <span id="padrino2">--</span></p>
         </div>
-        <p class="familia-detalle gold-text" style="font-family: var(--serif-body); font-style: italic;">"Su guía ilumina mi camino"</p>
+        <p class="familia-detalle gold-text">"Su guía ilumina mi camino"</p>
       </div>
     </div>
   </div>
 
-  <!-- JUEGO -->
-  <div id="game-overlay" role="dialog" aria-modal="true" aria-label="Juego de romper el hechizo">
-    <div id="game-panel">
-      <div id="game-header">
-        <span id="lives" class="gold-text">♥ ♥ ♥</span>
-        <span id="game-score" class="gold-text">Puntos: 0</span>
-        <button id="pause-btn" class="top-btn" aria-label="Pausar o reanudar juego">⏸️</button>
-        <button id="game-close" aria-label="Cerrar juego">&times;</button>
-      </div>
-      <div id="game-stage">
-        <div id="game-inner">
-          <div id="paddle"></div>
-          <div id="ball"></div>
-        </div>
-        <div id="game-msg">
-          <p id="game-msg-text" class="gold-text">¡Game Over!</p>
-          <button class="game-btn gold-text" id="game-restart">Jugar de nuevo</button>
-        </div>
-      </div>
-      <p class="game-help gold-text">Mueve con dedo, A/D o flechas del teclado</p>
-    </div>
-  </div>
-
-  <!-- MODAL DE PAUSA (fuera del área de juego) -->
-  <div class="modal-overlay" id="modal-pausa" role="dialog" aria-modal="true" aria-labelledby="modal-pausa-title">
-    <div class="modal-card">
-      <button class="modal-close" id="close-pausa" aria-label="Cerrar pausa">&times;</button>
-      <h2 id="modal-pausa-title" class="gold-text">⏸️ Juego en pausa</h2>
-      <p class="modal-subtitle gold-text">Toca el botón de play para continuar</p>
-      <button id="resume-btn" class="game-btn gold-text">▶️ Reanudar</button>
-    </div>
-  </div>
-
-  <script type="module" src="script.js"></script>
+  <script type="module" src="script-principal.js"></script>
 </body>
 </html>
